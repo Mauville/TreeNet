@@ -1,7 +1,12 @@
+import observabletree.ObservableTree;
 import org.junit.jupiter.api.Test;
 
-class TestJunit2 {
+class TestObservableList {
+    ObservableTree<Integer> a = new ObservableTree<>();
+    ObservableTree<Integer> b = new ObservableTree<>();
+
     @Test
-    void testSalutationMessage() {
+    void testNodeLeaf() {
+
     }
 }

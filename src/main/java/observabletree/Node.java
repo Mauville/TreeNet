@@ -1,6 +1,6 @@
 package observabletree;
 
-public class Node<E extends Comparable<E>> implements Comparable<E> {
+public class Node<E extends Comparable<E>> implements Comparable<Node<E>> {
     private Node<E> left;
     private Node<E> right;
     private E val;
@@ -8,13 +8,27 @@ public class Node<E extends Comparable<E>> implements Comparable<E> {
     public Node(E val) {
         this.val = val;
     }
-//    public boolean isLeaf(){
-//       return(left && right);
-//    }
+    public Node() {
+    }
+
+    public boolean hasRight(){
+        return (right !=null);
+    }
+    public boolean hasLeft(){
+        return (left !=null);
+    }
+
+    public boolean isLeaf() {
+        return (this.left == null && this.right == null);
+    }
+
+    public boolean isEmpty() {
+        return (this.val == null);
+    }
 
     @Override
-    public int compareTo(E other) {
-        return val.compareTo(other);
+    public int compareTo(Node<E> other) {
+        return this.val.compareTo(other.getVal());
     }
 
     public Node<E> getLeft() {
@@ -37,7 +51,7 @@ public class Node<E extends Comparable<E>> implements Comparable<E> {
         return val;
     }
 
-    public void setVal(E val) {
+    void setVal(E val) {
         this.val = val;
     }
 
