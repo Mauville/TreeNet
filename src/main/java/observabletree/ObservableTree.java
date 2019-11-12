@@ -3,6 +3,7 @@ package observabletree;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -10,15 +11,17 @@ public class ObservableTree<E extends Comparable<E>> implements Collection<E>, O
 
     private Node<E> root;
 
+    private ArrayList<E> orderingarray = new ArrayList<>();
+
     public boolean isEmpty() {
         return root == null;
     }
 
     public E getRoot() {
-        if (root.getVal() == null) {
+        if (root.getValue() == null) {
             throw new NullPointerException("No root value");
         } else {
-            return root.getVal();
+            return root.getValue();
         }
     }
 
@@ -54,11 +57,11 @@ public class ObservableTree<E extends Comparable<E>> implements Collection<E>, O
 
     private boolean insert(E e, Node<E> root) {
         if (root.isEmpty()) {
-            root.setVal(e);
+            root.setValue(e);
             return true;
         } else {
             Node<E> next;
-            if (e.compareTo(root.getVal()) < 0) {
+            if (e.compareTo(root.getValue()) < 0) {
                 next = root.getLeft();
             } else {
                 next = root.getRight();
@@ -68,12 +71,12 @@ public class ObservableTree<E extends Comparable<E>> implements Collection<E>, O
         return true;
     }
 
-    public boolean remove(E e) {
-        return delete(e, this.root);
+    public void remove(E e) {
+        delete(e, this.root);
     }
 
-    public boolean delete(E e, Node<E> root) {
-        int comparison = e.compareTo(root.getVal());
+    private Node<E> delete(E e, Node<E> root) {
+        int comparison = e.compareTo(root.getValue());
         if (comparison < 0) {
             delete(e, root.getLeft());
         } else if (comparison > 0) {
@@ -82,22 +85,75 @@ public class ObservableTree<E extends Comparable<E>> implements Collection<E>, O
             if (!root.isLeaf()) {
                 Node<E> l = root.getLeft();
                 Node<E> r = root.getLeft();
-                if (root.hasLeft() && !root.hasRight()){
+                if (root.hasLeft() && !root.hasRight()) {
                     root = l;
-                }
-                else if (!root.hasLeft() && root.hasRight()){
+                } else if (!root.hasLeft() && root.hasRight()) {
                     root = r;
-                }
-                else if (root.hasLeft() && root.hasRight()){
-                    //todo
+                } else if (root.hasLeft() && root.hasRight()) {
+                    Node<E> predecessor = getMaximumNode(root.getLeft());
+                    root.setValue( predecessor.getValue());
+                    root.setLeft(delete(predecessor.getValue(), root.getLeft()));
                 }
 
             } else {
-                root = null;
+                return null;
             }
         }
+        return root;
         //TODO rebalance();
-        return true;
+    }
+
+
+    private ArrayList<E> inOrder() {
+        orderingarray.clear();
+        inOrderRec(this.root);
+        return orderingarray;
+    }
+
+    private void inOrderRec(Node<E> e) {
+        if (e != null) {
+            inOrderRec(e.getLeft());
+            orderingarray.add(e.getValue());
+            inOrderRec(e.getRight());
+        }
+    }
+
+    private ArrayList<E> preOrder() {
+        orderingarray.clear();
+        preOrderRec(this.root);
+        return orderingarray;
+    }
+
+    private void preOrderRec(Node<E> e) {
+        if (e != null) {
+            orderingarray.add(e.getValue());
+            inOrderRec(e.getLeft());
+            inOrderRec(e.getRight());
+        }
+    }
+
+    public E getMinimum() {
+        Node<E> e = getMinimumNode(root);
+        return e.getValue();
+    }
+
+    private Node<E> getMinimumNode(Node<E> e) {
+        while (e.hasLeft()) {
+            e = e.getLeft();
+        }
+        return e;
+    }
+
+    public E getMaximum() {
+        Node<E> e = getMaximumNode(root);
+        return e.getValue();
+    }
+
+    private Node<E> getMaximumNode(Node<E> e) {
+        while (e.hasRight()) {
+            e = e.getRight();
+        }
+        return e;
     }
 
 

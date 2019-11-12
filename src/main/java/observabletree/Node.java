@@ -28,7 +28,7 @@ public class Node<E extends Comparable<E>> implements Comparable<Node<E>> {
 
     @Override
     public int compareTo(Node<E> other) {
-        return this.val.compareTo(other.getVal());
+        return this.val.compareTo(other.getValue());
     }
 
     public Node<E> getLeft() {
@@ -47,11 +47,11 @@ public class Node<E extends Comparable<E>> implements Comparable<Node<E>> {
         this.right = right;
     }
 
-    public E getVal() {
+    public E getValue() {
         return val;
     }
 
-    void setVal(E val) {
+    void setValue(E val) {
         this.val = val;
     }
 
