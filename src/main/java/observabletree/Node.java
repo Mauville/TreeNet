@@ -1,21 +1,40 @@
 package observabletree;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Node<E extends Comparable<E>> implements Comparable<Node<E>> {
     private Node<E> left;
     private Node<E> right;
     private E val;
+    private int height;
+
+    @Override
+    public int compareTo(Node<E> other) {
+        return this.val.compareTo(other.getValue());
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
 
     public Node(E val) {
         this.val = val;
     }
+
     public Node() {
     }
 
-    public boolean hasRight(){
-        return (right !=null);
+    public boolean hasRight() {
+        return (right != null);
     }
-    public boolean hasLeft(){
-        return (left !=null);
+
+    public boolean hasLeft() {
+        return (left != null);
     }
 
     public boolean isLeaf() {
@@ -24,11 +43,6 @@ public class Node<E extends Comparable<E>> implements Comparable<Node<E>> {
 
     public boolean isEmpty() {
         return (this.val == null);
-    }
-
-    @Override
-    public int compareTo(Node<E> other) {
-        return this.val.compareTo(other.getValue());
     }
 
     public Node<E> getLeft() {
@@ -54,5 +68,6 @@ public class Node<E extends Comparable<E>> implements Comparable<Node<E>> {
     void setValue(E val) {
         this.val = val;
     }
+
 
 }

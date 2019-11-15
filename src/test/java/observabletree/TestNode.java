@@ -1,3 +1,5 @@
+package observabletree;
+
 import observabletree.Node;
 import org.junit.jupiter.api.Test;
 
