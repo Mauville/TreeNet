@@ -1,12 +1,13 @@
 package observabletree;
 
+import javafx.scene.control.ListView;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
 public class AVLTree<E extends Comparable<E>> implements Collection<E> {
-
     private Node<E> root;
 
     private ArrayList<E> orderingarray = new ArrayList<>();
@@ -25,8 +26,6 @@ public class AVLTree<E extends Comparable<E>> implements Collection<E> {
         } else
             return b;
     }
-
-
 
     private Node<E> rotateRight(Node<E> e) {
         Node<E> temp = e.getLeft();
@@ -62,6 +61,7 @@ public class AVLTree<E extends Comparable<E>> implements Collection<E> {
         e.setLeft(rotateLeft(e.getLeft()));
         return rotateRight(e);
     }
+
 
     @Override
     public boolean isEmpty() {
