@@ -1,5 +1,8 @@
 package observabletree;
 
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
+import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
 
 import java.util.ArrayList;
@@ -7,7 +10,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-public class AVLTree<E extends Comparable<E>> implements Collection<E> {
+public class AVLTree<E extends Comparable<E>> implements Observable {
+
     private Node<E> root;
 
     private ArrayList<E> orderingarray = new ArrayList<>();
@@ -62,10 +66,42 @@ public class AVLTree<E extends Comparable<E>> implements Collection<E> {
         return rotateRight(e);
     }
 
+    public boolean add(E e) {
+        return insert(e, this.root) != null;
+    }
 
-    @Override
+    private Node<E> insert(E e, Node<E> root) {
+        if (root == null) {
+            root = new Node<E>(e);
+        } else {
+            if (e.compareTo(root.getValue()) > 0) {
+                root.setRight((insert(e, root.getRight())));
+                if (height((root.getLeft())) - height(root.getRight()) == -2) {
+                    if (e.compareTo(root.getRight().getValue()) > 0) {
+                        root = rotateLeft(root);
+                    } else {
+                        root = rotateDoubleLeft(root);
+                    }
+                }
+            }
+            if (e.compareTo(root.getValue()) < 0) {
+                root.setLeft((insert(e, root.getLeft())));
+                if (height(root.getLeft()) - height(root.getRight()) == 2) {
+                    if (e.compareTo(root.getLeft().getValue()) < 0) {
+                        root = rotateRight(root);
+                    } else {
+                        root = rotateDoubleRight(root);
+                    }
+                }
+            }
+        }
+        int height = max(height(root.getLeft()), height(root.getRight()));
+        root.setHeight(height + 1);
+        return root;
+    }
+
     public boolean isEmpty() {
-        return root.isEmpty();
+        return root == null;
     }
 
     public E getRoot() {
@@ -76,17 +112,14 @@ public class AVLTree<E extends Comparable<E>> implements Collection<E> {
         }
     }
 
-    @Override
     public void clear() {
         root = null;
     }
 
-    @Override
     public int size() {
         return inOrder().size();
     }
 
-    @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
         List<List<String>> lines = new ArrayList<List<String>>();
@@ -190,66 +223,6 @@ public class AVLTree<E extends Comparable<E>> implements Collection<E> {
         return s.toString();
     }
 
-    @Override
-    public boolean add(E e) {
-        return insert(e, this.root);
-    }
-
-    private boolean insert(E e, Node<E> root) {
-        if (root.isEmpty()) {
-            root.setValue(e);
-            return true;
-        } else {
-            Node<E> next;
-            if (e.compareTo(root.getValue()) < 0) {
-                next = root.getLeft();
-            } else {
-                next = root.getRight();
-            }
-            insert(e, next);
-
-        }
-        return true;
-    }
-
-    public void remove(E e) {
-        delete(e, this.root);
-    }
-
-    @Override
-    public boolean remove(Object o) {
-        return false;
-    }
-
-    private Node<E> delete(E e, Node<E> root) {
-        int comparison = e.compareTo(root.getValue());
-        if (comparison < 0) {
-            delete(e, root.getLeft());
-        } else if (comparison > 0) {
-            delete(e, root.getRight());
-        } else {
-            if (!root.isLeaf()) {
-                Node<E> l = root.getLeft();
-                Node<E> r = root.getLeft();
-                if (root.hasLeft() && !root.hasRight()) {
-                    root = l;
-                } else if (!root.hasLeft() && root.hasRight()) {
-                    root = r;
-                } else if (root.hasLeft() && root.hasRight()) {
-                    Node<E> predecessor = getMaximumNode(root.getLeft());
-                    root.setValue(predecessor.getValue());
-                    root.setLeft(delete(predecessor.getValue(), root.getLeft()));
-                }
-
-            } else {
-                return null;
-            }
-        }
-        return root;
-        //TODO rebalance();
-    }
-
-
     private ArrayList<E> inOrder() {
         orderingarray.clear();
         inOrderRec(this.root);
@@ -302,45 +275,66 @@ public class AVLTree<E extends Comparable<E>> implements Collection<E> {
         return e;
     }
 
-    @Override
-    public boolean containsAll(Collection<?> c) {
-        return inOrder().containsAll(c);
-    }
-
-    @Override
     public boolean contains(Object o) {
         return inOrder().contains(o);
     }
 
 
+    public boolean remove(E e) {
+        return delete(e, this.root) != null;
+    }
+
+    private Node<E> delete(E e, Node<E> root) {
+        int comparison = e.compareTo(root.getValue());
+
+        if (comparison < 0) {
+            root.setRight(delete(e, root.getRight()));
+        }
+        else if (comparison > 0) {
+            root.setLeft(delete(e, root.getLeft()));
+        }
+        else {
+            if (!root.isLeaf()) {
+                Node<E> l = root.getLeft();
+                Node<E> r = root.getLeft();
+                if (root.hasLeft() && !root.hasRight()) {
+                    root = l;
+                } else if (!root.hasLeft() && root.hasRight()) {
+                    root = r;
+
+                } else if (root.hasLeft() && root.hasRight()) {
+                    Node<E> predecessor = getMaximumNode(root.getLeft());
+                    root.setValue(predecessor.getValue());
+                    root.setLeft(delete(predecessor.getValue(), root.getLeft()));
+                }
+
+            } else {
+                return null;
+            }
+        }
+        //Get rebalance in order
+//        int balance = getBalance(node);
+//        if (balance > 1 && getBalance(node.getLeft()) >= 0)
+//            return simpleRightRotation(node);
+//        if (balance < -1 && getBalance(node.getRight()) <= 0)
+//            return simpleLeftRotation(node);
+//        if (balance > 1 && getBalance(node.getLeft()) < 0)
+//            return doubleRightRotation(node);
+//        if (balance < -1 && getBalance(node.getRight()) > 0)
+//            return doubleLeftRotation(node);
+        return root;
+    }
+
+
+
     @Override
-    public Iterator<E> iterator() {
-        return null;
+    public void addListener(InvalidationListener listener) {
+
     }
 
     @Override
-    public Object[] toArray() {
-        return new Object[0];
-    }
+    public void removeListener(InvalidationListener listener) {
 
-    @Override
-    public <T> T[] toArray(T[] a) {
-        return null;
-    }
-
-    @Override
-    public boolean addAll(Collection<? extends E> c) {
-        return false;
-    }
-
-    @Override
-    public boolean removeAll(Collection<?> c) {
-        return false;
-    }
-
-    @Override
-    public boolean retainAll(Collection<?> c) {
-        return false;
     }
 }
 
