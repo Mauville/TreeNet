@@ -286,7 +286,6 @@ public class AVLTree<E extends Comparable<E>> extends Observable {
         return inOrder().contains(o);
     }
 
-
     public boolean remove(E e) {
         return delete(e, this.root) != null;
     }
