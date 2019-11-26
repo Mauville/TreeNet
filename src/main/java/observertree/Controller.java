@@ -143,13 +143,18 @@ public class Controller implements Observer {
 
     @FXML
     public void handleAdd() {
-        backtree.add(inputbox.getText());
+        String val = inputbox.getText();
+        if (!backtree.contains(val))
+            backtree.add(val);
         inputbox.setText("");
     }
 
     @FXML
     public void handleDelete() {
-        backtree.remove(inputbox.getText());
+        String val = inputbox.getText();
+        if (backtree.contains(val))
+            backtree.remove(val);
+        else
         inputbox.setText("");
     }
 
