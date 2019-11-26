@@ -1,19 +1,14 @@
 package observertree;
 
-import gui.Launcher;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import observabletree.AVLTree;
-import observabletree.Node;
 
-import java.awt.*;
 import java.io.IOException;
-import java.util.ArrayList;
-import javafx.scene.control.Button;
+
 import javafx.scene.control.TextField;
 import observabletree.AVLTree;
 
@@ -94,7 +89,7 @@ public class Controller implements Observer {
 
     // This runs before all other code and sets the observer for the observable tree
     @FXML
-    void initialize(){
+    void initialize() {
         backtree.addObserver(this);
     }
 
@@ -105,19 +100,38 @@ public class Controller implements Observer {
     }
 
     // Reload the current FXML
-    public void clear(){
-        Stage primaryStage = (Stage) inputbox.getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/view.fxml"));
-        Parent root = null;
-        try {
-            root = loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        primaryStage.setTitle("AVL Tree");
-        primaryStage.setScene(new Scene(root, 702, 483));
-        primaryStage.show();
+    public void clear() {
+        a_1.setVisible(false);
+        b_0.setVisible(false);
+        b_1.setVisible(false);
+        c_0.setVisible(false);
+        c_1.setVisible(false);
+        c_2.setVisible(false);
+        c_3.setVisible(false);
+        d_0.setVisible(false);
+        d_1.setVisible(false);
+        d_2.setVisible(false);
+        d_3.setVisible(false);
+        d_4.setVisible(false);
+        d_5.setVisible(false);
+        d_6.setVisible(false);
+        d_7.setVisible(false);
+        e_0.setVisible(false);
+        e_1.setVisible(false);
+        e_2.setVisible(false);
+        e_3.setVisible(false);
+        e_4.setVisible(false);
+        e_5.setVisible(false);
+        e_6.setVisible(false);
+        e_7.setVisible(false);
+        e_8.setVisible(false);
+        e_9.setVisible(false);
+        e_10.setVisible(false);
+        e_11.setVisible(false);
+        e_12.setVisible(false);
+        e_13.setVisible(false);
+        e_14.setVisible(false);
+        e_15.setVisible(false);
     }
 
     // Reload the current FXML and delete the tree vals
@@ -129,8 +143,8 @@ public class Controller implements Observer {
 
     @FXML
     public void handleAdd() {
-       backtree.add(inputbox.getText());
-       inputbox.setText("");
+        backtree.add(inputbox.getText());
+        inputbox.setText("");
     }
 
     @FXML

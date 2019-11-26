@@ -1,8 +1,5 @@
 package observabletree;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Node<E extends Comparable<E>> implements Comparable<Node<E>> {
     private Node<E> left;
     private Node<E> right;
@@ -69,5 +66,10 @@ public class Node<E extends Comparable<E>> implements Comparable<Node<E>> {
         this.val = val;
     }
 
+    void updateHeight() {
+        int heightLeft = left != null ? left.getHeight() : 0;
+        int heightRight = right != null ? right.getHeight() : 0;
+        height = Math.max(heightLeft, heightRight) + 1;
+    }
 
 }

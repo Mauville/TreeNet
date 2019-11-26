@@ -73,7 +73,7 @@ public class AVLTree<E extends Comparable<E>> extends Observable {
 
     private Node<E> insert(E e, Node<E> root) {
         if (root == null) {
-            root = new Node<E>(e);
+            root = new Node<>(e);
         } else {
             if (e.compareTo(root.getValue()) > 0) {
                 root.setRight((insert(e, root.getRight())));
@@ -129,15 +129,15 @@ public class AVLTree<E extends Comparable<E>> extends Observable {
 
     public String toString() {
         StringBuilder s = new StringBuilder();
-        List<List<String>> lines = new ArrayList<List<String>>();
-        List<Node<E>> level = new ArrayList<Node<E>>();
-        List<Node<E>> next = new ArrayList<Node<E>>();
+        List<List<String>> lines = new ArrayList<>();
+        List<Node<E>> level = new ArrayList<>();
+        List<Node<E>> next = new ArrayList<>();
         level.add(root);
         int nn = 1;
         int widest = 0;
 
         while (nn != 0) {
-            List<String> line = new ArrayList<String>();
+            List<String> line = new ArrayList<>();
 
             nn = 0;
 
@@ -330,19 +330,26 @@ public class AVLTree<E extends Comparable<E>> extends Observable {
         }
 
         //Get rebalance in order
-//        int balance = getBalance(node);
-//        if (balance > 1 && getBalance(node.getLeft()) >= 0)
-//            return simpleRightRotation(node);
-//        if (balance < -1 && getBalance(node.getRight()) <= 0)
-//            return simpleLeftRotation(node);
-//        if (balance > 1 && getBalance(node.getLeft()) < 0)
-//            return doubleRightRotation(node);
-//        if (balance < -1 && getBalance(node.getRight()) > 0)
-//            return doubleLeftRotation(node);
+        root.updateHeight();
+        int balance = getBalance(root);
+        if (balance > 1 && getBalance(root.getLeft()) >= 0)
+            return rotateRight(root);
+        if (balance < -1 && getBalance(root.getRight()) <= 0)
+            return rotateLeft(root);
+        if (balance > 1 && getBalance(root.getLeft()) < 0)
+            return rotateDoubleRight(root);
+        if (balance < -1 && getBalance(root.getRight()) > 0)
+            return rotateDoubleLeft(root);
         return root;
     }
 
 
+    private int getBalance(Node<E> node) {
+        if (node == null) return 0;
+        int heightLeft = node.getLeft() != null ? node.getLeft().getHeight() : 0;
+        int heightRight = node.getRight() != null ? node.getRight().getHeight() : 0;
+        return heightLeft - heightRight;
+    }
 
 
 }
