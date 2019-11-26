@@ -1,11 +1,17 @@
 package observertree;
 
+import gui.Launcher;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 import observabletree.AVLTree;
 import observabletree.Node;
 
 import java.awt.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -93,20 +99,32 @@ public class Controller implements Observer {
     }
 
     @Override
-
     public void update(Observable o, Object arg) {
         clear();
         render();
     }
 
+    // Reload the current FXML
     public void clear(){
-        // Reload the FXML so that nothing is visible
-
+        Stage primaryStage = (Stage) inputbox.getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/view.fxml"));
+        Parent root = null;
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        primaryStage.setTitle("AVL Tree");
+        primaryStage.setScene(new Scene(root, 702, 483));
+        primaryStage.show();
     }
 
+    // Reload the current FXML and delete the tree vals
     @FXML
     public void handleClear() {
         backtree.clear();
+        clear();
     }
 
     @FXML
