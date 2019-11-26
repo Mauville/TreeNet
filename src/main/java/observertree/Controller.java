@@ -8,7 +8,11 @@ import observabletree.Node;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class Controller {
+import java.util.Observable;
+import java.util.Observer;
+
+public class Controller implements Observer {
+
     //31 StackPane
     @FXML
     private StackPane a_1;
@@ -74,21 +78,17 @@ public class Controller {
     private StackPane e_15;
 
 
-    //Recover info from pre Order
-    AVLTree dummy= new AVLTree();
-    ArrayList al=dummy.preOrder();
+    @Override
 
-    public void render(){
-
-
-        //Put it into the FXML while preOrdering it
-    }
-    public void preOrder(){
-
-        preOrderRec(dummy.getRoot());
+    public void update(Observable o, Object arg) {
+        clear();
+       render();
     }
 
-    private void preOrderRec(Comparable root) {
+    @FXML
+    public void clear() {
+    }
 
+    private void render() {
     }
 }
