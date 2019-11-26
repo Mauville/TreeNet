@@ -1,11 +1,11 @@
 package observabletree;
 
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
-public class AVLTree<E extends Comparable<E>> implements Observable {
+public class AVLTree<E extends Comparable<E>> extends Observable {
 
     private Node<E> root;
 
@@ -29,9 +29,10 @@ public class AVLTree<E extends Comparable<E>> implements Observable {
     private Node<E> rotateRight(Node<E> e) {
         Node<E> temp = e.getLeft();
         e.setLeft(temp.getRight());
-        //TODO notify
+        // Notify the Observers of a Change
+        setChanged();
+        notifyObservers();
         temp.setRight(e);
-        //TODO notify
         e.setHeight(max(height(e.getLeft()), height(e.getRight())) + 1);
         temp.setHeight(max(height(temp.getLeft()), height(temp.getRight()) + 1));
         return temp;
@@ -40,9 +41,10 @@ public class AVLTree<E extends Comparable<E>> implements Observable {
     private Node<E> rotateLeft(Node<E> e) {
         Node<E> temp = e.getRight();
         e.setRight(temp.getLeft());
-        //TODO Notify
+        // Notify the Observers of a Change
+        setChanged();
+        notifyObservers();
         temp.setLeft(e);
-        //TODO Notify
         temp.setLeft(e);
         e.setHeight(max(height(e.getLeft()), height(e.getRight())) + 1);
         temp.setHeight(max(height(temp.getRight()), height(e)) + 1);
@@ -50,14 +52,18 @@ public class AVLTree<E extends Comparable<E>> implements Observable {
     }
 
     private Node<E> rotateDoubleLeft(Node<E> e) {
-        //TODO Notify
         e.setRight(rotateRight(e.getRight()));
+        // Notify the Observers of a Change
+        setChanged();
+        notifyObservers();
         return rotateLeft(e);
     }
 
     private Node<E> rotateDoubleRight(Node<E> e) {
-        //TODO Notify
         e.setLeft(rotateLeft(e.getLeft()));
+        // Notify the Observers of a Change
+        setChanged();
+        notifyObservers();
         return rotateRight(e);
     }
 
@@ -71,6 +77,8 @@ public class AVLTree<E extends Comparable<E>> implements Observable {
         } else {
             if (e.compareTo(root.getValue()) > 0) {
                 root.setRight((insert(e, root.getRight())));
+                setChanged();
+                notifyObservers();
                 if (height((root.getLeft())) - height(root.getRight()) == -2) {
                     if (e.compareTo(root.getRight().getValue()) > 0) {
                         root = rotateLeft(root);
@@ -81,6 +89,8 @@ public class AVLTree<E extends Comparable<E>> implements Observable {
             }
             if (e.compareTo(root.getValue()) < 0) {
                 root.setLeft((insert(e, root.getLeft())));
+                setChanged();
+                notifyObservers();
                 if (height(root.getLeft()) - height(root.getRight()) == 2) {
                     if (e.compareTo(root.getLeft().getValue()) < 0) {
                         root = rotateRight(root);
@@ -109,6 +119,8 @@ public class AVLTree<E extends Comparable<E>> implements Observable {
 
     public void clear() {
         root = null;
+        setChanged();
+        notifyObservers();
     }
 
     public int size() {
@@ -284,9 +296,13 @@ public class AVLTree<E extends Comparable<E>> implements Observable {
 
         if (comparison < 0) {
             root.setRight(delete(e, root.getRight()));
+            setChanged();
+            notifyObservers();
         }
         else if (comparison > 0) {
             root.setLeft(delete(e, root.getLeft()));
+            setChanged();
+            notifyObservers();
         }
         else {
             if (!root.isLeaf()) {
@@ -294,13 +310,19 @@ public class AVLTree<E extends Comparable<E>> implements Observable {
                 Node<E> r = root.getLeft();
                 if (root.hasLeft() && !root.hasRight()) {
                     root = l;
+                    setChanged();
+                    notifyObservers();
                 } else if (!root.hasLeft() && root.hasRight()) {
                     root = r;
+                    setChanged();
+                    notifyObservers();
 
                 } else if (root.hasLeft() && root.hasRight()) {
                     Node<E> predecessor = getMaximumNode(root.getLeft());
                     root.setValue(predecessor.getValue());
                     root.setLeft(delete(predecessor.getValue(), root.getLeft()));
+                    setChanged();
+                    notifyObservers();
                 }
 
             } else {
@@ -322,14 +344,6 @@ public class AVLTree<E extends Comparable<E>> implements Observable {
 
 
 
-    @Override
-    public void addListener(InvalidationListener listener) {
 
-    }
-
-    @Override
-    public void removeListener(InvalidationListener listener) {
-
-    }
 }
 
