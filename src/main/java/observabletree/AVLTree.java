@@ -2,12 +2,7 @@ package observabletree;
 
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
-import javafx.collections.ObservableList;
-import javafx.scene.control.ListView;
-
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 public class AVLTree<E extends Comparable<E>> implements Observable {
