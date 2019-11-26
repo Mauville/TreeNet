@@ -84,11 +84,13 @@ public class Controller implements Observer {
     @FXML
     TextField inputbox;
 
-    // Method gets called on every initialization of the FXMl
-//    @FXML
-//    public initialize(){
-//        AVLTree.setObserver(this);
-//    }
+    AVLTree<String> backtree = new AVLTree<>();
+
+    // This runs before all other code and sets the observer for the observable tree
+    @FXML
+    void initialize(){
+        backtree.addObserver(this);
+    }
 
     @Override
 
@@ -97,13 +99,26 @@ public class Controller implements Observer {
         render();
     }
 
+    public void clear(){
+        // Reload the FXML so that nothing is visible
+
+    }
+
     @FXML
-    public void clear() {
+    public void handleClear() {
+        backtree.clear();
     }
 
     @FXML
     public void handleAdd() {
-//       AVLTree.add(inputbox.getText());
+       backtree.add(inputbox.getText());
+       inputbox.setText("");
+    }
+
+    @FXML
+    public void handleDelete() {
+        backtree.remove(inputbox.getText());
+        inputbox.setText("");
     }
 
     private void render() {

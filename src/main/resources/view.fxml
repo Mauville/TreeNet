@@ -816,7 +816,12 @@
                   <Insets bottom="15.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="resetbutton" mnemonicParsing="false" onAction="#clear" text="Reset">
+            <Button fx:id="resetbutton" mnemonicParsing="false" onAction="#handleClear" text="Reset">
+               <HBox.margin>
+                  <Insets bottom="15.0" left="17.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="deletebutton" mnemonicParsing="false" onAction="#handleDelete" text="Delete">
                <HBox.margin>
                   <Insets bottom="15.0" left="17.0" />
                </HBox.margin>

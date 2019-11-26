@@ -329,6 +329,7 @@ public class AVLTree<E extends Comparable<E>> extends Observable {
                 return null;
             }
         }
+
         //Get rebalance in order
 //        int balance = getBalance(node);
 //        if (balance > 1 && getBalance(node.getLeft()) >= 0)
