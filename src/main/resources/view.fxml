@@ -21,7 +21,7 @@
                <children>
                   <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <StackPane id="e_0" fx:id="b_01" prefHeight="80.0" prefWidth="339.0">
+                        <StackPane id="e_0" fx:id="a_1" prefHeight="80.0" prefWidth="339.0">
                            <children>
                               <Circle fill="DODGERBLUE" radius="15.0" scaleZ="2.0" stroke="BLACK" strokeType="INSIDE">
                                  <styleClass>
@@ -29,7 +29,7 @@
                                     <String fx:value="visible, levele" />
                                  </styleClass>
                               </Circle>
-                              <Label fx:id="a_0" text="100">
+                              <Label fx:id="b_01" text="100">
                                  <font>
                                     <Font size="8.0" />
                                  </font>

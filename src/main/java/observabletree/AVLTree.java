@@ -232,7 +232,7 @@ public class AVLTree<E extends Comparable<E>> implements Observable {
         }
     }
 
-    private ArrayList<E> preOrder() {
+    public ArrayList<E> preOrder() {
         orderingarray.clear();
         preOrderRec(this.root);
         return orderingarray;
